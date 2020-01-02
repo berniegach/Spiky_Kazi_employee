@@ -1,0 +1,93 @@
+<resources>
+    <string name="app_name">Spiky Kazi</string>
+    <string name="app_version">Version 1.0.6</string>
+    <string name="copyright">\u00A9 2019 Spiking Acacia</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_verify_password">Verify Password</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+
+    <!-- Example settings for Data & Sync -->
+
+    <!-- Example settings for Notifications -->
+
+    <!-- my strings-->
+    <string name="forgotyourpassword">Forgot your password?</string>
+
+    <string name="title_activity_umenu">UMenuActivity</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+    <string name="pref_header_location">Location</string>
+    <string name="pref_header_feedback">Feedback</string>
+    <string name="pref_header_help">Help</string>
+    <string name="pref_header_account">Account</string>
+
+
+    <!-- Example settings for Data & Sync -->
+
+    <!-- Example settings for Notifications -->
+
+    <string name="pref_ringtone_silent">Silent</string>
+
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_uptabbed_profile">UPTabbedProfileA</string>
+    <string name="title_message_list">Messages</string>
+    <string name="title_message_detail">Message Detail</string>
+    <string name="title_activity_cttasks">CTTasksA</string>
+    <string name="action_logout">Logout</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="location_permission_denied">This app requires location permission. Please try again and grant access to use the location.</string>
+    <string name="permission_required_toast">Location permission is required for this app.</string>
+
+    <!-- my strings-->
+    <!-- employee's help page-->
+    <string name="u_h_1">Profile</string>
+    <string name="u_h_1_a">\u2460 Define your full names.</string>
+    <string name="u_h_1_b">\u279e Settings \u279e General \u279e Full names</string>
+    <string name="u_h_2_a">\u2461 Upload your profile picture</string>
+    <string name="u_h_2_b">\u279e Settings \u279e General \u279e </string>
+    <string name="u_h_3_a">\u2462 Set your location</string>
+    <string name="u_h_3_b">\u279e Settings \u279e Location \u279e Country</string>
+    <string name="u_h_3_c">\u279e Settings \u279e Location \u279e Change Location</string>
+
+    <string name="u_h_2">Company</string>
+    <string name="u_h_4_a">\u2460 Add your account to your respective company using the company\'s emails address, one the company\'s uses in kazi</string>
+    <string name="u_h_4_b">\u279e Profile \u279e Create \u279e Email address</string>
+
+    <string name="u_h_3">Skills</string>
+    <string name="u_h_5_a">\u2460 Define your work position</string>
+    <string name="u_h_5_b">\u279e Profile \u279e As</string>
+    <string name="u_h_6_a">\u2461 Define the qualifications you have while uploading their respective certificates or licenses for each
+    and setting the issue and expiry dates for the certificate or license</string>
+    <string name="u_h_6_b">\u279e Profile \u279e Skills \u279e Qualifications</string>
+    <string name="u_h_7_a">\u2462 Define notification periods for each requirement. This is done so that you can be alerted when a cerficate or license expires or near expiry</string>
+    <string name="u_h_7_b">\u279e Profile \u279e Skills \u279e Notifications</string>
+
+    <string name="u_h_4">Equipments</string>
+    <string name="u_h_8_a">Follow the procedure shown above but now for the equipments</string>
+
+    <string name="u_h_end">\u20de Congratulations, your account is now set</string>
+
+    <!-- boss's help page-->
+
+    <!--subscriptions-->
+    <!--general -->
+    <string name="login_welcome">Manage your \n Compliance</string>
+    <string name="register">Register</string>
+    <string name="about">About</string>
+</resources>

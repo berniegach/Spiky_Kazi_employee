@@ -1,0 +1,42 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- These settings headers are only used on tablets. -->
+
+    <Preference
+        android:fragment="com.spikingacacia.spikykaziemployee.USettingsActivity$GeneralPreferenceFragment"
+        android:icon="@drawable/ic_info"
+        android:title="@string/pref_header_general" />
+
+    <Preference
+        android:fragment="com.spikingacacia.spikykaziemployee.USettingsActivity$LocationPreferenceFragment"
+        android:icon="@drawable/ic_location"
+        android:title="@string/pref_header_location"
+        app:allowDividerAbove="true"/>
+    <Preference
+        android:fragment="com.spikingacacia.spikykaziemployee.USettingsActivity$FeedBackPreferenceFragment"
+        android:icon="@drawable/ic_feedback"
+        android:title="@string/pref_header_feedback"
+        app:allowDividerAbove="true"/>
+    <Preference
+        android:fragment="com.spikingacacia.spikykaziemployee.USettingsActivity$HelpPreferenceFragment"
+        android:icon="@drawable/ic_help"
+        android:title="@string/pref_header_help"
+        app:allowDividerAbove="true"/>
+    <Preference
+        android:fragment="com.spikingacacia.spikykaziemployee.USettingsActivity$AccountPreferenceFragment"
+        android:icon="@drawable/ic_account"
+        android:title="@string/pref_header_account"
+        app:allowDividerAbove="true"/>
+    <Preference
+        android:fragment="com.spikingacacia.spikykaziemployee.USettingsActivity$AboutPreferenceFragment"
+        android:icon="@drawable/ic_about"
+        android:title="@string/about"
+        app:allowDividerAbove="true"/>
+
+    <!--<Preference
+        android:fragment="com.spikingacacia.kazi.contractor.CSettingsActivity$PrivilegesPreferenceFragment"
+        android:icon="@drawable/ic_privileges"
+        android:title="@string/pref_header_privileges" /> -->
+
+</PreferenceScreen>

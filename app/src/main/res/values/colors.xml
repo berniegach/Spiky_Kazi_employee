@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorAccent">#6e8f8f</color>
+    <color name="transparent">#00ffffff</color>
+
+    <color name="main_background">#666666</color>
+    <color name="secondary_background">#505050</color>
+    <color name="tertiary_background">#464646</color>
+    <color name="button_normal">#6e8f8f</color>
+    <color name="button_focused">#3fa5a5</color>
+    <color name="button_pressed">#084848</color>
+    <color name="text">#fafafa</color>
+
+    <color name="graph_1">#5a5f5f</color>
+    <color name="graph_2">#b4beb4</color>
+    <color name="graph_3">#c8bebe</color>
+    <color name="graph_4">#5a6b6b</color>
+    <color name="graph_5">#646e6e</color>
+    <color name="graph_6">#5a5a6b</color>
+    <color name="graph_11">#96a0a0</color>
+    <color name="graph_12">#96a096</color>
+    <color name="graph_13">#a09696</color>
+    <color name="graph_14">#a0b4a0</color>
+</resources>

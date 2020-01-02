@@ -1,0 +1,114 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.spikingacacia.spikykaziemployee">
+
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
+    <uses-feature
+        android:name="android.hardware.Camera"
+        android:required="false" />
+
+    <application
+        android:name=".Initializer"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <!--
+        This is required if the app targets api level 28(android 9.0) or above and uses the google maps sdk
+        for android 16.0.0 or below (or if the app uses the apache http legacy library)
+        -->
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="www.spikingacacia.com"
+                    android:scheme="https"/>
+            </intent-filter>
+        </activity>
+
+        <service android:name=".ProgressView" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+
+        <activity
+            android:name=".UMenuActivity"
+            android:label="@string/title_activity_umenu"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".USettingsActivity"
+            android:theme="@style/NonFullscreenCSettings" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps" />
+        <activity
+            android:name=".profile.UPProfileA"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".profile.UPTabbedProfileA"
+            android:label="@string/title_activity_uptabbed_profile"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".profile.UPTabbedProfileEquipA"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".notifications.UNMessageListActivity"
+            android:label="@string/title_message_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".notifications.UNMessageDetailActivity"
+            android:label="@string/title_message_detail"
+            android:parentActivityName=".notifications.UNMessageListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".notifications.UNMessageListActivity" />
+        </activity>
+        <activity
+            android:name=".tasks.UTTasksA"
+            android:label="@string/title_activity_cttasks"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".performance.UPerformanceA"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+    </application>
+</manifest>

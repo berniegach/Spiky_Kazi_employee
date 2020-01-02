@@ -1,0 +1,15 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <Preference
+        android:key="profile_delete"
+        android:title="Delete Profile"
+        android:summary="Remove your information from the set company">
+    </Preference>
+    <Preference
+        android:key="account_delete"
+        android:title="Delete Account"
+        android:summary="Remove your information from Kazi system"
+        app:allowDividerAbove="true">
+    </Preference>
+
+</PreferenceScreen>
