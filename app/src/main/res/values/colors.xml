@@ -21,4 +21,13 @@
     <color name="graph_12">#96a096</color>
     <color name="graph_13">#a09696</color>
     <color name="graph_14">#a0b4a0</color>
+
+    <!-- light theme -->
+    <color name="main_background_light">#ffffff</color>
+    <color name="secondary_background_light">#e6e7e8</color>
+    <color name="tertiary_background_light">#dcddde</color>
+    <color name="button_normal_light">#6e8f8f</color>
+    <color name="button_focused_light">#3fa5a5</color>
+    <color name="button_pressed_light">#084848</color>
+    <color name="text_light">#000000</color>
 </resources>

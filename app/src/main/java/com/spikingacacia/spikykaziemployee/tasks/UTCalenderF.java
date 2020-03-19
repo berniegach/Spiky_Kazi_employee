@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 
 import com.spikingacacia.spikykaziemployee.CommonHelper;
 import com.spikingacacia.spikykaziemployee.LoginActivity;
+import com.spikingacacia.spikykaziemployee.Preferences;
 import com.spikingacacia.spikykaziemployee.R;
 import com.spikingacacia.spikykaziemployee.database.CTasks;
 
@@ -92,6 +93,7 @@ public class UTCalenderF extends Fragment
     private LinearLayout dHours;
     private TextView tMonthDay;
     private TextView tTodayDay;
+    private Preferences preferences;
 
     private OnFragmentInteractionListener mListener;
 
@@ -124,6 +126,7 @@ public class UTCalenderF extends Fragment
     {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.f_ctcalender, container, false);
+        preferences=new Preferences(getContext());
         handler=new Handler();
         //months view
         l_months_view=view.findViewById(R.id.month_view);
@@ -248,6 +251,24 @@ public class UTCalenderF extends Fragment
         //addDaysToDaysHeader(currentCalender,0);
        // initializeCurrentWeek(currentCalender);
        // initializeCurrentWeekDay(currentCalender);
+        if(!preferences.isDark_theme_enabled())
+        {
+            view.findViewById(R.id.footer).setBackgroundColor(getResources().getColor(R.color.tertiary_background_light));
+            monthView.setBackgroundColor(getResources().getColor(R.color.secondary_background_light));
+            weekView.setBackgroundColor(getResources().getColor(R.color.secondary_background_light));
+            dayView.setBackgroundColor(getResources().getColor(R.color.secondary_background_light));
+            view.findViewById(R.id.month_days).setBackgroundColor(getResources().getColor(R.color.tertiary_background_light));
+            inHowLong.setBackgroundColor(getResources().getColor(R.color.tertiary_background_light));
+            //week
+            weekView.setBackgroundColor(getResources().getColor(R.color.secondary_background_light));
+            view.findViewById(R.id.week_days).setBackgroundColor(getResources().getColor(R.color.tertiary_background_light));
+            view.findViewById(R.id.week_view).setBackgroundColor(getResources().getColor(R.color.secondary_background_light));
+            wDays.setBackgroundColor(getResources().getColor(R.color.tertiary_background_light));
+            //day view
+            dayView.setBackgroundColor(getResources().getColor(R.color.secondary_background_light));
+            view.findViewById(R.id.day_view_days).setBackgroundColor(getResources().getColor(R.color.tertiary_background_light));
+            view.findViewById(R.id.d_days).setBackgroundColor(getResources().getColor(R.color.tertiary_background_light));
+        }
 
         return view;
     }
@@ -457,7 +478,11 @@ public class UTCalenderF extends Fragment
     private void getTaskColor()
     {
         //colors
-        int color=ContextCompat.getColor(getContext(), R.color.tertiary_background);
+        int color;
+        if(preferences.isDark_theme_enabled())
+            color=ContextCompat.getColor(getContext(), R.color.tertiary_background);
+        else
+            color=ContextCompat.getColor(getContext(), R.color.tertiary_background_light);
         /*switch(mWhichTask)
         {
             case 1:
@@ -739,7 +764,10 @@ public class UTCalenderF extends Fragment
         layout.setLayoutParams(params);
         layout.setOrientation(LinearLayout.VERTICAL);
         if(c==1)
-            layout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.secondary_background));
+            if(preferences.isDark_theme_enabled())
+                layout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.secondary_background));
+            else
+                layout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.secondary_background_light));
         //layout.setDividerPadding(5);
         layout.setShowDividers(LinearLayout.SHOW_DIVIDER_BEGINNING | LinearLayout.SHOW_DIVIDER_MIDDLE | LinearLayout.SHOW_DIVIDER_END);
         layout.setDividerDrawable(getResources().getDrawable(R.drawable.divider_line));
@@ -962,7 +990,10 @@ public class UTCalenderF extends Fragment
         if(c==1)
         {
             params = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
-            layout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.secondary_background));
+            if(preferences.isDark_theme_enabled())
+                layout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.secondary_background));
+            else
+                layout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.secondary_background_light));
         }
         else
             params=new LinearLayout.LayoutParams(0,ViewGroup.LayoutParams.WRAP_CONTENT,7);

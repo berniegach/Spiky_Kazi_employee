@@ -41,8 +41,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
+import com.spikingacacia.spikykaziemployee.GetFilePathFromDevice;
 import com.spikingacacia.spikykaziemployee.JSONParser;
 import com.spikingacacia.spikykaziemployee.LoginActivity;
+import com.spikingacacia.spikykaziemployee.Preferences;
 import com.spikingacacia.spikykaziemployee.R;
 import com.spikingacacia.spikykaziemployee.database.UserCertificates;
 
@@ -98,6 +100,7 @@ public class UPTRequirementsF extends Fragment
     private TextView certficateTv;
     private String certName;
     private List<Boolean>compliance;
+    private Preferences preferences;
 
     public UPTRequirementsF()
     {
@@ -131,6 +134,7 @@ public class UPTRequirementsF extends Fragment
     {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.f_crstrades_quali, container, false);
+        preferences = new Preferences(getContext());
         ((Button)view.findViewById(R.id.update_button)).setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -244,7 +248,10 @@ public class UPTRequirementsF extends Fragment
             LinearLayout tradeLayout = new LinearLayout(getContext());
             tradeLayout.setOrientation(LinearLayout.HORIZONTAL);
             tradeLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            tradeLayout.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.secondary_background));
+            if(preferences.isDark_theme_enabled())
+                tradeLayout.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.secondary_background));
+            else
+                tradeLayout.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.secondary_background_light));
             tradeLayout.setPadding(10,10,10,10);
             tradeLayout.setOnClickListener(new View.OnClickListener()
             {
@@ -286,7 +293,10 @@ public class UPTRequirementsF extends Fragment
             LinearLayout qualiLayout = new LinearLayout(getContext());
             qualiLayout.setOrientation(LinearLayout.HORIZONTAL);
             qualiLayout.setLayoutParams(layoutParams3);
-            qualiLayout.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.secondary_background));
+            if(preferences.isDark_theme_enabled())
+                qualiLayout.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.secondary_background));
+            else
+                qualiLayout.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.secondary_background_light));
             qualiLayout.setPadding(10,10,10,10);
 
             //content textview
@@ -357,7 +367,10 @@ public class UPTRequirementsF extends Fragment
             textViewIssue.setText(issueDate==null?"Issue":issueDate.contentEquals("0")?"Issue":"Issue: "+issueDate);
             textViewIssue.setPadding(0,12,0,12);
             textViewIssue.setGravity(Gravity.CENTER);
-            textViewIssue.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.tertiary_background));
+            if(preferences.isDark_theme_enabled())
+                textViewIssue.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.tertiary_background));
+            else
+                textViewIssue.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.tertiary_background_light));
             textViewIssue.setTypeface(font);
             textViewIssue.setOnClickListener(new View.OnClickListener()
             {
@@ -374,7 +387,10 @@ public class UPTRequirementsF extends Fragment
             textViewExpiry.setText(expiryDate==null?"Expiry":expiryDate.contentEquals("0")?"Expiry":"Expiry: "+expiryDate);
             textViewExpiry.setGravity(Gravity.CENTER);
             textViewExpiry.setPadding(0,12,0,12);
-            textViewExpiry.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.tertiary_background));
+            if(preferences.isDark_theme_enabled())
+                textViewExpiry.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.tertiary_background));
+            else
+                textViewExpiry.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.tertiary_background_light));
             textViewExpiry.setTypeface(font);
             textViewExpiry.setOnClickListener(new View.OnClickListener()
             {
@@ -795,7 +811,7 @@ public class UPTRequirementsF extends Fragment
             {
                 certficateTv.setBackgroundColor(getResources().getColor(R.color.button_normal));
 
-                String path=getPath(uri);
+                String path = GetFilePathFromDevice.getPath(getContext(),uri);
                 String[] token=path.split(".");
                 String [] title=path.split("/");
                 for(int count=0; count<token.length; count+=1)
@@ -803,7 +819,7 @@ public class UPTRequirementsF extends Fragment
                 certficateTv.setText(title[title.length-1]);
 
                // certificates.get(certIndex).setCert(String.format("%d_%d",LoginActivity.userAccount.getId(),certIndex));
-                Log.d("uri",getPath(uri));
+                Log.d("uri",GetFilePathFromDevice.getPath(getContext(),uri));
                // certUri[certIndex]=uri;
                 uploadCert(1,path);
 
@@ -813,32 +829,6 @@ public class UPTRequirementsF extends Fragment
                 Log.e("bitmap",""+e.getMessage());
             }
         }
-    }
-    private String getPath(Uri uri)
-    {
-        if(uri==null)
-            return null;
-        String res=null;
-        if (DocumentsContract.isDocumentUri(getActivity(), uri))
-        {
-            //emulator
-            String[] path = uri.getPath().split(":");
-            res = path[1];
-            Log.i("debinf ProdAct", "Real file path on Emulator: "+res);
-        }
-        else
-        {
-            String[]proj={MediaStore.Images.Media.DATA};
-            Cursor cursor=getContext().getContentResolver().query(uri,proj,null,null,null);
-            if(cursor.moveToFirst())
-            {
-                int column_index=cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                res=cursor.getString(column_index);
-            }
-            cursor.close();
-        }
-
-        return res;
     }
     /*
      * This is the method responsible for pdf upload

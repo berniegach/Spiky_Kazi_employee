@@ -5,6 +5,9 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -20,10 +23,13 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.spikingacacia.spikykaziemployee.LoginActivity;
+import com.spikingacacia.spikykaziemployee.Preferences;
 import com.spikingacacia.spikykaziemployee.R;
 import com.spikingacacia.spikykaziemployee.database.CTasks;
+import com.spikingacacia.spikykaziemployee.pie_chart;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -54,6 +60,7 @@ public class UTOverviewF extends Fragment
     private int completedCount=0;
     private int overdueCount=0;
     private int lateCount=0;
+    private Preferences preferences;
 
 
     public UTOverviewF()
@@ -84,6 +91,7 @@ public class UTOverviewF extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         /*if (getArguments() != null)
         {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -97,6 +105,7 @@ public class UTOverviewF extends Fragment
     {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.f_utoverview, container, false);
+        preferences=new Preferences(getContext());
         //textviews
         pCount=view.findViewById(R.id.p_count);
         iCount=view.findViewById(R.id.i_count);
@@ -195,6 +204,16 @@ public class UTOverviewF extends Fragment
 
         //font
         font= ResourcesCompat.getFont(getContext(),R.font.arima_madurai);
+        if(!preferences.isDark_theme_enabled())
+        {
+            ((LinearLayout)view.findViewById(R.id.chart_back)).setBackgroundColor(getResources().getColor(R.color.main_background_light));
+            ((LinearLayout)view.findViewById(R.id.pending)).setBackgroundColor(getResources().getColor(R.color.tertiary_background_light));
+            ((LinearLayout)view.findViewById(R.id.inprogress)).setBackgroundColor(getResources().getColor(R.color.tertiary_background_light));
+            ((LinearLayout)view.findViewById(R.id.completed)).setBackgroundColor(getResources().getColor(R.color.tertiary_background_light));
+            ((LinearLayout)view.findViewById(R.id.overdue)).setBackgroundColor(getResources().getColor(R.color.tertiary_background_light));
+            ((LinearLayout)view.findViewById(R.id.unfinished)).setBackgroundColor(getResources().getColor(R.color.tertiary_background_light));
+            ((LinearLayout)view.findViewById(R.id.all)).setBackgroundColor(getResources().getColor(R.color.tertiary_background_light));
+        }
 
         return view;
     }
@@ -234,7 +253,7 @@ public class UTOverviewF extends Fragment
         uCount.setText(String.valueOf(lateCount));
         aCount.setText(String.valueOf(pendingCount+inProgressCount+completedCount+overdueCount+ lateCount));
         //piechart
-        setPieChart(chart);
+        pie_chart.init(chart,getContext());
         setTasksPie(chart);
     }
 
@@ -244,108 +263,83 @@ public class UTOverviewF extends Fragment
         super.onDetach();
         mListener = null;
     }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        super.onCreateOptionsMenu(menu, inflater);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.pie, menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.actionToggleValues: {
+                for (IDataSet<?> set : chart.getData().getDataSets())
+                    set.setDrawValues(!set.isDrawValuesEnabled());
+                item.setChecked(!item.isChecked());
+                chart.invalidate();
+                break;
+            }
+            case R.id.actionToggleHole: {
+                if (chart.isDrawHoleEnabled())
+                    chart.setDrawHoleEnabled(false);
+                else
+                    chart.setDrawHoleEnabled(true);
+                item.setChecked(!item.isChecked());
+                chart.invalidate();
+                break;
+            }
+            case R.id.actionTogglePercent:
+                chart.setUsePercentValues(!chart.isUsePercentValuesEnabled());
+                item.setChecked(!item.isChecked());
+                chart.invalidate();
+                break;
+        }
+        return true;
+    }
     public interface OnFragmentInteractionListener
     {
         void onTaskClicked(int id);
     }
-    private void setPieChart(PieChart pieChart)
-    {
-        pieChart.setUsePercentValues(true);
-        pieChart.getDescription().setEnabled(false);
-        pieChart.setExtraOffsets(5,10,5,5);
-        pieChart.setDragDecelerationFrictionCoef(0.95f);
-        pieChart.setDrawHoleEnabled(false);
-        // pieChart.setHoleColor(Color.TRANSPARENT);
-        pieChart.setTransparentCircleColor(Color.WHITE);
-        pieChart.setTransparentCircleAlpha(110);
-        //pieChart.setHoleRadius(95f);
-        pieChart.setRotationAngle(0);
-        pieChart.setRotationEnabled(true);
-        pieChart.setHighlightPerTapEnabled(true);
-        pieChart.setEntryLabelColor(Color.WHITE);
-        // pieChart.setEntryLabelTypeface(getResources().getFont(R.font.arima_madurai));
-
-        Legend legend=pieChart.getLegend();
-        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
-        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
-        legend.setDrawInside(false);
-        legend.setXEntrySpace(7f);
-        legend.setYEntrySpace(0f);
-        legend.setYOffset(0f);
-        legend.setTextSize(13);
-        legend.setTextColor(Color.WHITE);
-        legend.setTypeface(font);
-        //entry label
-        pieChart.setEntryLabelColor(Color.WHITE);
-        pieChart.setEntryLabelTypeface(font);
-        pieChart.setEntryLabelTextSize(12);
-
-
-        pieChart.invalidate();
-
-    }
     private void setTasksPie(PieChart pieChart)
     {
         List<PieEntry> entries=new ArrayList<>();
-        //colors
-        List<Integer>colors=new ArrayList<>();
-        List<Integer>tempColors=new ArrayList<>();
+
         if(pendingCount==0 && inProgressCount==0 && completedCount==0 && overdueCount==0 && lateCount ==0)
         {
             entries.add(new PieEntry(1,"Empty"));
-            colors= ColorTemplate.createColors(getResources(),new int[]{R.color.graph_1});
         }
         else
         {
             if(pendingCount>0)
             {
                 entries.add(new PieEntry(pendingCount, pendingCount>0?"Pending":""));
-                tempColors.add(R.color.graph_2);
-                //ColorTemplate.createColors(getResources(),new int[]{R.color.a_mono3});
             }
             if(inProgressCount>0)
             {
                 entries.add(new PieEntry(inProgressCount, "In Progress"));
-                tempColors.add(R.color.graph_3);
-                //ColorTemplate.createColors(getResources(),new int[]{R.color.a_mono5});
             }
             if(completedCount>0)
             {
                 entries.add(new PieEntry(completedCount, "Completed"));
-                tempColors.add(R.color.graph_4);
-                //ColorTemplate.createColors(getResources(),new int[]{R.color.a_mono7});
             }
             if(overdueCount>0)
             {
                 entries.add(new PieEntry(overdueCount, "Overdue"));
-                tempColors.add(R.color.graph_5);
-                //ColorTemplate.createColors(getResources(),new int[]{R.color.a_comp5});
             }
             if(lateCount >0)
             {
                 entries.add(new PieEntry(lateCount, "Unfinished"));
-                tempColors.add(R.color.graph_6);
-                //ColorTemplate.createColors(getResources(),new int[]{R.color.a_comp3});
             }
-            int[]tempTempColors=new int[tempColors.size()];
-            for(int count=0; count<tempColors.size(); count+=1 )
-                tempTempColors[count]=tempColors.get(count);
-            colors= ColorTemplate.createColors(getResources(),tempTempColors);
-
 
         }
-        PieDataSet set=new PieDataSet(entries,"Count");
-        set.setSliceSpace(0f);
-        //colors
-        set.setColors(colors);
-        PieData data=new PieData(set);
-        data.setValueTextColor(Color.WHITE);
-        data.setValueTypeface(font);
-        data.setValueFormatter(new PercentFormatter());
-        pieChart.setData(data);
-        pieChart.highlightValues(null);
-        pieChart.invalidate();
+
+        pie_chart.add_data(entries,"Count",chart);
+
     }
     private void setCounts()
     {

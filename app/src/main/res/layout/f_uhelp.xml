@@ -2,7 +2,10 @@
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:divider="?android:listDivider"
+    android:dividerPadding="10dp"
+    android:showDividers="middle">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -11,7 +14,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/secondary_background"
             android:gravity="center"
             android:text="@string/u_h_1"
             android:textSize="18sp" />
@@ -19,14 +21,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/tertiary_background"
             android:padding="10dp"
             android:text="@string/u_h_1_a" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/tertiary_background"
             android:padding="10dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
@@ -35,14 +35,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/tertiary_background"
             android:padding="10dp"
             android:text="@string/u_h_2_a" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/tertiary_background"
             android:padding="10dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
@@ -51,14 +49,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/tertiary_background"
             android:padding="10dp"
             android:text="@string/u_h_3_a" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/tertiary_background"
             android:padding="10dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
@@ -67,7 +63,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/tertiary_background"
             android:padding="10dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
@@ -83,7 +78,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/secondary_background"
             android:gravity="center"
             android:text="@string/u_h_2"
             android:textSize="18sp" />
@@ -91,14 +85,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/tertiary_background"
             android:padding="10dp"
             android:text="@string/u_h_4_a" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/tertiary_background"
             android:padding="10dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
@@ -113,7 +105,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/secondary_background"
             android:gravity="center"
             android:text="@string/u_h_3"
             android:textSize="18sp" />
@@ -121,14 +112,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/tertiary_background"
             android:padding="10dp"
             android:text="@string/u_h_5_a" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/tertiary_background"
             android:padding="10dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
@@ -137,14 +126,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/tertiary_background"
             android:padding="10dp"
             android:text="@string/u_h_6_a" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/tertiary_background"
             android:padding="10dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
@@ -153,14 +140,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/tertiary_background"
             android:padding="10dp"
             android:text="@string/u_h_7_a" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/tertiary_background"
             android:padding="10dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
@@ -175,7 +160,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/secondary_background"
             android:gravity="center"
             android:text="@string/u_h_4"
             android:textSize="18sp" />
@@ -183,7 +167,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/tertiary_background"
             android:padding="10dp"
             android:text="@string/u_h_8_a" />
 
@@ -196,7 +179,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/tertiary_background"
             android:gravity="center"
             android:padding="10dp"
             android:text="@string/u_h_end" />

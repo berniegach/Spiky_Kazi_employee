@@ -41,6 +41,7 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
 import com.spikingacacia.spikykaziemployee.JSONParser;
 import com.spikingacacia.spikykaziemployee.LoginActivity;
+import com.spikingacacia.spikykaziemployee.Preferences;
 import com.spikingacacia.spikykaziemployee.R;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
@@ -92,6 +93,7 @@ public class UPTEquipPropertiesF extends Fragment
     private boolean requirementsChanged;
     private boolean datesIssueChanged;
     private boolean datesExpiryChanged;
+    private Preferences preferences;
 
     public UPTEquipPropertiesF()
     {
@@ -125,6 +127,7 @@ public class UPTEquipPropertiesF extends Fragment
     {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.f_uptequi_properties, container, false);
+        preferences = new Preferences(getContext());
         ((Button)view.findViewById(R.id.update_button)).setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -210,7 +213,10 @@ public class UPTEquipPropertiesF extends Fragment
             LinearLayout tradeLayout = new LinearLayout(getContext());
             tradeLayout.setOrientation(LinearLayout.HORIZONTAL);
             tradeLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            tradeLayout.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.secondary_background));
+            if(preferences.isDark_theme_enabled())
+                tradeLayout.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.secondary_background));
+            else
+                tradeLayout.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.secondary_background_light));
             tradeLayout.setPadding(10,10,10,10);
             tradeLayout.setOnClickListener(new View.OnClickListener()
             {
@@ -348,7 +354,10 @@ public class UPTEquipPropertiesF extends Fragment
                 LinearLayout qualiLayout = new LinearLayout(getContext());
                 qualiLayout.setOrientation(LinearLayout.HORIZONTAL);
                 qualiLayout.setLayoutParams(layoutParams3);
-                qualiLayout.setBackgroundColor(which=='m'?ContextCompat.getColor(getContext(),R.color.secondary_background):ContextCompat.getColor(getContext(),R.color.tertiary_background));
+                if(preferences.isDark_theme_enabled())
+                    qualiLayout.setBackgroundColor(which=='m'?ContextCompat.getColor(getContext(),R.color.secondary_background):ContextCompat.getColor(getContext(),R.color.tertiary_background));
+                else
+                    qualiLayout.setBackgroundColor(which=='m'?ContextCompat.getColor(getContext(),R.color.secondary_background_light):ContextCompat.getColor(getContext(),R.color.tertiary_background_light));
                 qualiLayout.setPadding(10,10,10,10);
                 //item number textview
                 TextView textCount2=new TextView(getContext());
@@ -457,7 +466,11 @@ public class UPTEquipPropertiesF extends Fragment
             textViewIssue.setText(issueDate==null?"Issue":issueDate.contentEquals("0")?"Issue":"Issue: "+issueDate);
             textViewIssue.setPadding(0,12,0,12);
             textViewIssue.setGravity(Gravity.CENTER);
-            textViewIssue.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.tertiary_background));
+            if(preferences.isDark_theme_enabled())
+                textViewIssue.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.tertiary_background));
+            else
+                textViewIssue.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.tertiary_background_light));
+
             textViewIssue.setTypeface(font);
             textViewIssue.setOnClickListener(new View.OnClickListener()
             {
@@ -474,7 +487,10 @@ public class UPTEquipPropertiesF extends Fragment
             textViewExpiry.setText(expiryDate==null?"Expiry":expiryDate.contentEquals("0")?"Expiry":"Expiry: "+expiryDate);
             textViewExpiry.setGravity(Gravity.CENTER);
             textViewExpiry.setPadding(0,12,0,12);
-            textViewExpiry.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.tertiary_background));
+            if(preferences.isDark_theme_enabled())
+                textViewExpiry.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.tertiary_background));
+            else
+                textViewExpiry.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.tertiary_background_light));
             textViewExpiry.setTypeface(font);
             textViewExpiry.setOnClickListener(new View.OnClickListener()
             {

@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import com.spikingacacia.spikykaziemployee.CommonHelper;
 import com.spikingacacia.spikykaziemployee.JSONParser;
 import com.spikingacacia.spikykaziemployee.LoginActivity;
+import com.spikingacacia.spikykaziemployee.Preferences;
 import com.spikingacacia.spikykaziemployee.R;
 
 import org.apache.http.NameValuePair;
@@ -50,6 +51,7 @@ public class UPTNotificationsEquipF extends Fragment
     private String TAG_MESSAGE="message";
     private boolean[][]tempNotis;
     private float textViewPadding=16;
+    private Preferences preferences;
 
     public UPTNotificationsEquipF()
     {
@@ -83,6 +85,7 @@ public class UPTNotificationsEquipF extends Fragment
     {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.f_uptnotifications_equip, container, false);
+        preferences=new Preferences(getContext());
         ((Button)view.findViewById(R.id.update_button)).setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -220,7 +223,10 @@ public class UPTNotificationsEquipF extends Fragment
             LinearLayout tradeLayout = new LinearLayout(getContext());
             tradeLayout.setOrientation(LinearLayout.HORIZONTAL);
             tradeLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            tradeLayout.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.secondary_background));
+            if(preferences.isDark_theme_enabled())
+                tradeLayout.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.secondary_background));
+            else
+                tradeLayout.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.secondary_background_light));
            // tradeLayout.setPadding(10,10,10,10);
             tradeLayout.setOnClickListener(new View.OnClickListener()
             {
@@ -284,7 +290,10 @@ public class UPTNotificationsEquipF extends Fragment
                 final LinearLayout qualiLayout = new LinearLayout(getContext());
                 qualiLayout.setOrientation(LinearLayout.HORIZONTAL);
                 qualiLayout.setLayoutParams(layoutParams3);
-                qualiLayout.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.tertiary_background));
+                if(preferences.isDark_theme_enabled())
+                    qualiLayout.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.tertiary_background));
+                else
+                    qualiLayout.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.tertiary_background_light));
                 qualiLayout.setPadding(10,10,10,10);
                 //item number textview
                 TextView textCount2=new TextView(getContext());
@@ -378,7 +387,10 @@ public class UPTNotificationsEquipF extends Fragment
         final LinearLayout qualiLayout = new LinearLayout(getContext());
         qualiLayout.setOrientation(LinearLayout.HORIZONTAL);
         qualiLayout.setLayoutParams(layoutParams3);
-        qualiLayout.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.tertiary_background));
+        if(preferences.isDark_theme_enabled())
+            qualiLayout.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.tertiary_background));
+        else
+            qualiLayout.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.tertiary_background_light));
         qualiLayout.setPadding(10,10,10,10);
         //item number textview
         TextView textCount2=new TextView(getContext());

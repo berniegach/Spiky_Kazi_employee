@@ -14,6 +14,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.spikingacacia.spikykaziemployee.notifications.UNMessageListActivity;
 import com.spikingacacia.spikykaziemployee.performance.UPerformanceA;
@@ -25,11 +26,13 @@ public class UMenuActivity extends AppCompatActivity
     implements UMenuFragment.OnFragmentInteractionListener
 {
     private boolean runRate=true;
+    private Preferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_umenu);
+        preferences = new Preferences(getBaseContext());
         //set the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         CollapsingToolbarLayout collapsingToolbarLayout=findViewById(R.id.collapsingToolbar);
@@ -43,6 +46,21 @@ public class UMenuActivity extends AppCompatActivity
         FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.base,fragment,"menu");
         transaction.commit();
+        if(!preferences.isDark_theme_enabled())
+        {
+            setTheme(R.style.AppThemeLight);
+            findViewById(R.id.main).setBackgroundColor(getResources().getColor(R.color.main_background_light));
+            findViewById(R.id.sec_main).setBackgroundColor(getResources().getColor(R.color.secondary_background_light));
+            collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(R.color.text_light));
+            collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(R.color.text_light));
+            collapsingToolbarLayout.setBackgroundColor(getResources().getColor(R.color.main_background_light));
+            ((TextView)findViewById(R.id.who)).setTextColor(getResources().getColor(R.color.text_light));
+            ((TextView)findViewById(R.id.welcome)).setTextColor(getResources().getColor(R.color.text_light));
+            toolbar.setTitleTextColor(getResources().getColor(R.color.text_light));
+            toolbar.setPopupTheme(R.style.AppThemeLight_PopupOverlayLight);
+            AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
+            appBarLayout.getContext().setTheme(R.style.AppThemeLight_AppBarOverlayLight);
+        }
     }
 
     @Override

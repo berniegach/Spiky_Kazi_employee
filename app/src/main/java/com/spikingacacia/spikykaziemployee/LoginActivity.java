@@ -4,17 +4,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -26,6 +30,7 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.spikingacacia.spikykaziemployee.database.CReviews;
@@ -62,8 +67,7 @@ CreateAccountF.OnFragmentInteractionListener,
     //REMEMBER TO CHANGE THIS WHEN CHANGING BETWEEN ONLINE AND LOCALHOST
     public static final String base_url="https://www.spikingacacia.com/kazi_project/android/"; //online
     //public static final String base_url="http://10.0.2.2/kazi_project/android/"; //localhost no connection for testing user accounts coz it doesnt require subscription checking
-    //public static final String base_url="http://192.168.0.10/kazi_project/android/"; //localhost
-    //public static final String base_url="http://192.168.43.228/kazi_project/android/"; //localhost tablet
+
     private String TAG_SUCCESS="success";
     private String TAG_MESSAGE="message";
     private String TAG="LoginActivity";
@@ -116,17 +120,27 @@ CreateAccountF.OnFragmentInteractionListener,
     public static LinkedHashMap<String,UNotifications>uNotificationsList;
     public static List<CTasks>uTasksList;
     public static List<CReviews>uReviewsList;
-    private SharedPreferences loginPreferences;
-    private SharedPreferences.Editor loginPreferencesEditor;
+
+    private Preferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        CollapsingToolbarLayout collapsingToolbarLayout=findViewById(R.id.collapsingToolbar);
         //preference
-        loginPreferences=getBaseContext().getSharedPreferences("loginPrefs",MODE_PRIVATE);
-        loginPreferencesEditor=loginPreferences.edit();
+        preferences = new Preferences(getBaseContext());
+        if(!preferences.isDark_theme_enabled())
+        {
+            setTheme(R.style.AppThemeLight);
+            findViewById(R.id.main).setBackgroundColor(getResources().getColor(R.color.main_background_light));
+            findViewById(R.id.sec_main).setBackgroundColor(getResources().getColor(R.color.secondary_background_light));
+            ((TextView)findViewById(R.id.who)).setTextColor(getResources().getColor(R.color.text_light));
+            collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(R.color.text_light));
+            collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(R.color.text_light));
+            collapsingToolbarLayout.setBackgroundColor(getResources().getColor(R.color.main_background_light));
+        }
         //background intent
         intentLoginProgress=new Intent(LoginActivity.this,ProgressView.class);
         loginProgress=0;
@@ -150,7 +164,7 @@ CreateAccountF.OnFragmentInteractionListener,
         uTasksList=new ArrayList<>();
         jsonParser=new JSONParser();
         //firebase links
-        if((loginPreferences.getBoolean("verify",false)==true) || (loginPreferences.getBoolean("reset_password",false)==true))
+        if(preferences.isVerify_email() || preferences.isReset_password())
         {
             Toast.makeText(getBaseContext(),"Please wait",Toast.LENGTH_SHORT).show();
             FirebaseDynamicLinks.getInstance()
@@ -163,19 +177,19 @@ CreateAccountF.OnFragmentInteractionListener,
                             if (pendingDynamicLinkData != null)
                             {
                                 deepLink = pendingDynamicLinkData.getLink();
-                                if(loginPreferences.getBoolean("verify",false)==true)
+                                if(preferences.isVerify_email())
                                 {
                                     setTitle("Sign Up");
-                                    Fragment fragment=CreateAccountF.newInstance(1,loginPreferences.getString("email_verify",""));
+                                    Fragment fragment=CreateAccountF.newInstance(1,preferences.getEmail_to_verify());
                                     FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
                                     transaction.replace(R.id.loginbase,fragment,"createnewaccount");
                                     transaction.addToBackStack("createaccount");
                                     transaction.commit();
                                 }
-                                else if(loginPreferences.getBoolean("reset_password",false)==true)
+                                else if(preferences.isReset_password())
                                 {
                                     setTitle("Reset Password");
-                                    Fragment fragment=CreateAccountF.newInstance(2,loginPreferences.getString("email_reset_password",""));
+                                    Fragment fragment=CreateAccountF.newInstance(2,preferences.getEmail_to_reset_password());
                                     FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
                                     transaction.replace(R.id.loginbase,fragment,"createnewaccount");
                                     transaction.addToBackStack("createaccount");

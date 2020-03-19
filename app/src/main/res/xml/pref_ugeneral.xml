@@ -24,5 +24,11 @@
         android:title="Change Password"
         app:allowDividerAbove="true">
     </Preference>
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="dark_theme"
+        android:title="Dark Theme"
+        android:summary="Enable dark theme"
+        app:allowDividerAbove="true"/>
 
 </PreferenceScreen>

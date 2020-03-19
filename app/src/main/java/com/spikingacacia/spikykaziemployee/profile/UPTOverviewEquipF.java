@@ -5,8 +5,12 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.core.content.res.ResourcesCompat;
@@ -18,9 +22,12 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.spikingacacia.spikykaziemployee.LoginActivity;
+import com.spikingacacia.spikykaziemployee.Preferences;
 import com.spikingacacia.spikykaziemployee.R;
+import com.spikingacacia.spikykaziemployee.pie_chart;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,6 +56,7 @@ public class UPTOverviewEquipF extends Fragment
     private int[]haveEquipments;
     private int[]haveCertificates;
     private int expiredCertificates=0;
+    private Preferences preferences;
 
     public UPTOverviewEquipF()
     {
@@ -78,6 +86,7 @@ public class UPTOverviewEquipF extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (getArguments() != null)
         {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -91,6 +100,7 @@ public class UPTOverviewEquipF extends Fragment
     {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.f_uptoverviewequip, container, false);
+        preferences = new Preferences(getContext());
         //textviews
         TextView eCount=view.findViewById(R.id.eCount);
         TextView cCount=view.findViewById(R.id.cCount);
@@ -125,12 +135,16 @@ public class UPTOverviewEquipF extends Fragment
         font= ResourcesCompat.getFont(getContext(),R.font.arima_madurai);
         //chart
         chart=view.findViewById(R.id.chart);
-        setPieChart(chart);
+        pie_chart.init(chart,getContext());
         setCompliacePie(chart);
         //selector textview
         final TextView selector=view.findViewById(R.id.selector);
         selector.setText(LoginActivity.userAccount.getPosition());
-
+        if(!preferences.isDark_theme_enabled())
+        {
+            ((LinearLayout)view.findViewById(R.id.chart_back)).setBackgroundColor(getResources().getColor(R.color.main_background_light));
+            ((LinearLayout)view.findViewById(R.id.sec_main)).setBackgroundColor(getResources().getColor(R.color.tertiary_background_light));
+        }
 
         return view;
     }
@@ -143,88 +157,67 @@ public class UPTOverviewEquipF extends Fragment
         getEquipmentsInformation();
         setCompliacePie(chart);
     }
-    private void setPieChart(PieChart pieChart)
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
-        pieChart.setUsePercentValues(true);
-        pieChart.getDescription().setEnabled(false);
-        pieChart.setExtraOffsets(5,10,5,5);
-        pieChart.setDragDecelerationFrictionCoef(0.95f);
-        pieChart.setDrawHoleEnabled(false);
-        //pieChart.setHoleColor(Color.TRANSPARENT);
-        pieChart.setTransparentCircleColor(Color.WHITE);
-        pieChart.setTransparentCircleAlpha(110);
-       // pieChart.setHoleRadius(90f);
-        pieChart.setRotationAngle(0);
-        pieChart.setRotationEnabled(true);
-        pieChart.setHighlightPerTapEnabled(true);
-        pieChart.setEntryLabelColor(Color.WHITE);
-       // pieChart.setEntryLabelTypeface(getResources().getFont(R.font.arima_madurai));
+        super.onCreateOptionsMenu(menu, inflater);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.pie, menu);
 
-        Legend legend=pieChart.getLegend();
-        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
-        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
-        legend.setDrawInside(false);
-        legend.setXEntrySpace(7f);
-        legend.setYEntrySpace(0f);
-        legend.setYOffset(0f);
-        legend.setTextSize(13);
-        legend.setTextColor(Color.WHITE);
-        legend.setTypeface(font);
-        //entry label
-        pieChart.setEntryLabelColor(Color.WHITE);
-        pieChart.setEntryLabelTypeface(font);
-        pieChart.setEntryLabelTextSize(12);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-        pieChart.invalidate();
+        switch (item.getItemId()) {
 
+            case R.id.actionToggleValues: {
+                for (IDataSet<?> set : chart.getData().getDataSets())
+                    set.setDrawValues(!set.isDrawValuesEnabled());
+                item.setChecked(!item.isChecked());
+                chart.invalidate();
+                break;
+            }
+            case R.id.actionToggleHole: {
+                if (chart.isDrawHoleEnabled())
+                    chart.setDrawHoleEnabled(false);
+                else
+                    chart.setDrawHoleEnabled(true);
+                item.setChecked(!item.isChecked());
+                chart.invalidate();
+                break;
+            }
+            case R.id.actionTogglePercent:
+                chart.setUsePercentValues(!chart.isUsePercentValuesEnabled());
+                item.setChecked(!item.isChecked());
+                chart.invalidate();
+                break;
+        }
+        return true;
     }
     private void setCompliacePie(PieChart pieChart)
     {
         List<PieEntry>entries=new ArrayList<>();
-        //colors
-        List<Integer>colors=new ArrayList<>();
-        List<Integer>tempColors=new ArrayList<>();
         int comp=haveCertificates[0]-expiredCertificates;
         int nonComp=haveCertificates[0]-comp;
         if(comp==0 && nonComp==0)
         {
             entries.add(new PieEntry(1,"Empty"));
-            colors= ColorTemplate.createColors(getResources(),new int[]{R.color.graph_1});
         }
         else
         {
             if(comp>0)
             {
                 entries.add(new PieEntry(comp,comp>0?"Compliance":""));
-                tempColors.add(R.color.graph_14);
-                //ColorTemplate.createColors(getResources(),new int[]{R.color.a_mono3});
             }
             if(nonComp>0)
             {
                 entries.add(new PieEntry(nonComp,nonComp>0?"Missing":""));
-                tempColors.add(R.color.graph_13);
-                //ColorTemplate.createColors(getResources(),new int[]{R.color.a_mono3});
             }
-            int[]tempTempColors=new int[tempColors.size()];
-            for(int count=0; count<tempColors.size(); count+=1 )
-                tempTempColors[count]=tempColors.get(count);
-            colors= ColorTemplate.createColors(getResources(),tempTempColors);
 
         }
-        PieDataSet set=new PieDataSet(entries,"Compliance");
-        set.setSliceSpace(0f);
-        //colors
-        set.setColors(colors);
-        PieData data=new PieData(set);
-        data.setValueTextColor(Color.WHITE);
-        data.setValueTypeface(font);
-        data.setValueFormatter(new PercentFormatter());
-        pieChart.setData(data);
-        pieChart.highlightValues(null);
-        pieChart.invalidate();
 
+        pie_chart.add_data(entries,"Compliance",chart);
 
     }
     private void setFieldsPie(PieChart pieChart)

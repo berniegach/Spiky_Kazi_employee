@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.spikingacacia.spikykaziemployee.Preferences;
 import com.spikingacacia.spikykaziemployee.R;
 import com.spikingacacia.spikykaziemployee.tasks.UTAllTasksContent.Task;
 import com.spikingacacia.spikykaziemployee.tasks.UTAllTasksF.OnListFragmentInteractionListener;
@@ -29,6 +30,8 @@ public class UTAllTasksTaskRecyclerViewAdapter extends RecyclerView.Adapter<UTAl
     private final OnListFragmentInteractionListener mListener;
     private Context mContext;
     private  int mWhichTask=0;
+    private Preferences preferences;
+
 
     public UTAllTasksTaskRecyclerViewAdapter(List<Task> items, OnListFragmentInteractionListener listener, Context context, int whichTask)
     {
@@ -38,6 +41,7 @@ public class UTAllTasksTaskRecyclerViewAdapter extends RecyclerView.Adapter<UTAl
         itemsCopy.addAll(items);
         mContext=context;
         mWhichTask=whichTask;
+        preferences = new Preferences(context);
     }
 
     @Override
@@ -51,6 +55,10 @@ public class UTAllTasksTaskRecyclerViewAdapter extends RecyclerView.Adapter<UTAl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position)
     {
+        if(!preferences.isDark_theme_enabled())
+        {
+            holder.mView.setBackgroundColor(mContext.getResources().getColor(R.color.secondary_background_light));
+        }
         holder.mItem = mValues.get(position);
         holder.countView.setText(mValues.get(position).count);
         holder.titleView.setText(mValues.get(position).title);

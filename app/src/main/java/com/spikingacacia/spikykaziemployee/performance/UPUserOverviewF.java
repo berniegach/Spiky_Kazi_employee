@@ -5,6 +5,9 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -20,10 +23,13 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.spikingacacia.spikykaziemployee.LoginActivity;
+import com.spikingacacia.spikykaziemployee.Preferences;
 import com.spikingacacia.spikykaziemployee.R;
 import com.spikingacacia.spikykaziemployee.database.CReviews;
+import com.spikingacacia.spikykaziemployee.pie_chart;
 
 
 import java.util.ArrayList;
@@ -54,6 +60,7 @@ public class UPUserOverviewF extends Fragment {
     private int rating=0;
     private int pending=0;
     private int all=0;
+    private Preferences preferences;
 
     public UPUserOverviewF() {
         // Required empty public constructor
@@ -69,6 +76,7 @@ public class UPUserOverviewF extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (getArguments() != null) {
            // mUserid = getArguments().getInt(ARG_USER_ID);
         }
@@ -79,6 +87,7 @@ public class UPUserOverviewF extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.f_upuser_overview, container, false);
+        preferences = new Preferences(getContext()) ;
         chart=view.findViewById(R.id.chart);
         t_p_count=view.findViewById(R.id.p_count);
         t_a_count=view.findViewById(R.id.a_count);
@@ -101,6 +110,12 @@ public class UPUserOverviewF extends Fragment {
         });
         //font
         font= ResourcesCompat.getFont(getContext(),R.font.arima_madurai);
+        if(!preferences.isDark_theme_enabled())
+        {
+            view.findViewById(R.id.chart_back).setBackgroundColor(getResources().getColor(R.color.main_background_light));
+            view.findViewById(R.id.pending).setBackgroundColor(getResources().getColor(R.color.tertiary_background_light));
+            view.findViewById(R.id.all).setBackgroundColor(getResources().getColor(R.color.tertiary_background_light));
+        }
         return view;
     }
     
@@ -128,79 +143,59 @@ public class UPUserOverviewF extends Fragment {
         all=0;
         rating=0;
         setReviewsCount();
-        setPieChart(chart);
+        pie_chart.init(chart,getContext());
         setRatingPie(chart);
+    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        super.onCreateOptionsMenu(menu, inflater);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.pie, menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.actionToggleValues: {
+                for (IDataSet<?> set : chart.getData().getDataSets())
+                    set.setDrawValues(!set.isDrawValuesEnabled());
+                item.setChecked(!item.isChecked());
+                chart.invalidate();
+                break;
+            }
+            case R.id.actionToggleHole: {
+                if (chart.isDrawHoleEnabled())
+                    chart.setDrawHoleEnabled(false);
+                else
+                    chart.setDrawHoleEnabled(true);
+                item.setChecked(!item.isChecked());
+                chart.invalidate();
+                break;
+            }
+            case R.id.actionTogglePercent:
+                chart.setUsePercentValues(!chart.isUsePercentValuesEnabled());
+                item.setChecked(!item.isChecked());
+                chart.invalidate();
+                break;
+        }
+        return true;
     }
     
     public interface OnFragmentInteractionListener {
         void onUserLayoutClicked();
     }
-    private void setPieChart(PieChart pieChart)
-    {
-        //pieChart.setUsePercentValues(true);
-        pieChart.getDescription().setEnabled(false);
-        pieChart.setExtraOffsets(5,10,5,5);
-        pieChart.setDragDecelerationFrictionCoef(0.95f);
-        pieChart.setDrawHoleEnabled(false);
-        // pieChart.setHoleColor(Color.TRANSPARENT);
-        pieChart.setTransparentCircleColor(Color.WHITE);
-        pieChart.setTransparentCircleAlpha(110);
-        //pieChart.setHoleRadius(95f);
-        pieChart.setRotationAngle(-90);
-        pieChart.setRotationEnabled(false);
-        pieChart.setHighlightPerTapEnabled(true);
-        pieChart.setEntryLabelColor(Color.WHITE);
-        // pieChart.setEntryLabelTypeface(getResources().getFont(R.font.arima_madurai));
-
-        Legend legend=pieChart.getLegend();
-        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
-        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
-        legend.setDrawInside(false);
-        legend.setXEntrySpace(7f);
-        legend.setYEntrySpace(0f);
-        legend.setYOffset(0f);
-        legend.setTextSize(13);
-        legend.setTextColor(Color.WHITE);
-        legend.setTypeface(font);
-        //entry label
-        pieChart.setEntryLabelColor(Color.WHITE);
-        pieChart.setEntryLabelTypeface(font);
-        pieChart.setEntryLabelTextSize(12);
-
-
-        pieChart.invalidate();
-
-    }
     private void setRatingPie(PieChart pieChart)
     {
         List<PieEntry> entries=new ArrayList<>();
-        //colors
-        List<Integer>colors=new ArrayList<>();
-        List<Integer>tempColors=new ArrayList<>();
         //all
         entries.add(new PieEntry(rating));
-        tempColors.add(R.color.graph_13);
         entries.add(new PieEntry(5-rating));
-        tempColors.add(R.color.button_normal);
-        int[]tempTempColors=new int[tempColors.size()];
-        for(int count=0; count<tempColors.size(); count+=1 )
-            tempTempColors[count]=tempColors.get(count);
-        colors= ColorTemplate.createColors(getResources(),tempTempColors);
 
-
-        PieDataSet set=new PieDataSet(entries,"Average Rating");
-        set.setSliceSpace(0f);
-        //colors
-        set.setColors(colors);
-        PieData data=new PieData(set);
-        data.setValueTextColor(Color.WHITE);
-        data.setValueTypeface(font);
-        //data.setValueFormatter(new PercentFormatter());
-        data.setValueFormatter(new DefaultValueFormatter(1));
-        pieChart.setData(data);
-        pieChart.highlightValues(null);
-        pieChart.invalidate();
+        pie_chart.add_data(entries,"Average Rating",chart);
     }
 
     private void setReviewsCount()

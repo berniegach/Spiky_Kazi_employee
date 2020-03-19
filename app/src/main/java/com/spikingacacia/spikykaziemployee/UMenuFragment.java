@@ -56,6 +56,7 @@ public class UMenuFragment extends Fragment
     private int messagesCount=0;
     private int tasksCount=0;
     private int reviewsCount=0;
+    private Preferences preferences;
 
     public UMenuFragment()
     {
@@ -90,6 +91,7 @@ public class UMenuFragment extends Fragment
     {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.f_umenu, container, false);
+        preferences = new Preferences(getContext());
         tMessagesCount=view.findViewById(R.id.messages_count);
         tTasksCount=view.findViewById(R.id.tasks_count);
         tReviewsCount=view.findViewById(R.id.reviews_count);
@@ -222,6 +224,17 @@ public class UMenuFragment extends Fragment
             }
         };
         thread.start();
+        if(!preferences.isDark_theme_enabled())
+        {
+            view.findViewById(R.id.profile).setBackgroundColor(getResources().getColor(R.color.secondary_background_light));
+            view.findViewById(R.id.compliance).setBackgroundColor(getResources().getColor(R.color.secondary_background_light));
+            view.findViewById(R.id.reports).setBackgroundColor(getResources().getColor(R.color.secondary_background_light));
+            view.findViewById(R.id.tasks).setBackgroundColor(getResources().getColor(R.color.secondary_background_light));
+            view.findViewById(R.id.messages).setBackgroundColor(getResources().getColor(R.color.secondary_background_light));
+            view.findViewById(R.id.performance).setBackgroundColor(getResources().getColor(R.color.secondary_background_light));
+            view.findViewById(R.id.privileges).setBackgroundColor(getResources().getColor(R.color.secondary_background_light));
+            view.findViewById(R.id.settings).setBackgroundColor(getResources().getColor(R.color.secondary_background_light));
+        }
         return view;
     }
     @Override

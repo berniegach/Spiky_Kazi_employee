@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.appbar.AppBarLayout;
+import com.spikingacacia.spikykaziemployee.Preferences;
 import com.spikingacacia.spikykaziemployee.R;
 
 public class UTTasksA extends AppCompatActivity
@@ -17,16 +19,28 @@ public class UTTasksA extends AppCompatActivity
 {
     public static String fragmentWhich="overview";
     private int mWhichTask=0;
+    private Preferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_uttasks);
+        preferences = new Preferences(getBaseContext());
         //set actionbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Tasks");
+        if(!preferences.isDark_theme_enabled())
+        {
+            setTheme(R.style.AppThemeLight);
+            toolbar.setTitleTextColor(getResources().getColor(R.color.text_light));
+            toolbar.setPopupTheme(R.style.AppThemeLight_PopupOverlayLight);
+            AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
+            appBarLayout.getContext().setTheme(R.style.AppThemeLight_AppBarOverlayLight);
+            appBarLayout.setBackgroundColor(getResources().getColor(R.color.main_background_light));
+            findViewById(R.id.main).setBackgroundColor(getResources().getColor(R.color.main_background_light));
+        }
         //set the first base fragment
         Fragment fragment=UTOverviewF.newInstance("","");
         FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();

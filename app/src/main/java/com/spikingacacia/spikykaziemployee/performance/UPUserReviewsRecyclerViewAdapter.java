@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.spikingacacia.spikykaziemployee.Preferences;
 import com.spikingacacia.spikykaziemployee.R;
 import com.spikingacacia.spikykaziemployee.performance.UPUserReviewsContent.ReviewItem;
 import com.spikingacacia.spikykaziemployee.performance.UPUserReviewsF.OnListFragmentInteractionListener;
@@ -24,6 +25,7 @@ public class UPUserReviewsRecyclerViewAdapter extends RecyclerView.Adapter<UPUse
     private final OnListFragmentInteractionListener mListener;
     private List<ReviewItem>itemsCopy;
     private Context mContext;
+    private Preferences preferences;
 
     public UPUserReviewsRecyclerViewAdapter(List<ReviewItem> items, OnListFragmentInteractionListener listener, Context context) {
         mValues = items;
@@ -31,6 +33,7 @@ public class UPUserReviewsRecyclerViewAdapter extends RecyclerView.Adapter<UPUse
         itemsCopy=new ArrayList<>();
         itemsCopy.addAll(items);
         mContext=context;
+        preferences = new Preferences(context);
     }
 
     @Override
@@ -41,7 +44,12 @@ public class UPUserReviewsRecyclerViewAdapter extends RecyclerView.Adapter<UPUse
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position)
+    {
+        if(!preferences.isDark_theme_enabled())
+        {
+            holder.mView.setBackgroundColor(mContext.getResources().getColor(R.color.secondary_background_light));
+        }
         holder.mItem = mValues.get(position);
         holder.mCountView.setText(mValues.get(position).count);
         holder.mDateView.setText(mValues.get(position).dateAdded);

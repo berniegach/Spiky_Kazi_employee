@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.textfield.TextInputLayout;
 import com.spikingacacia.spikykaziemployee.JSONParser;
 import com.spikingacacia.spikykaziemployee.LoginActivity;
+import com.spikingacacia.spikykaziemployee.Preferences;
 import com.spikingacacia.spikykaziemployee.R;
 
 
@@ -62,6 +63,7 @@ public class UPAddF extends Fragment
     private Spinner spinner;
     private String companyId;
     private boolean justStarted=true;
+    private Preferences preferences;
 
     public UPAddF()
     {
@@ -95,6 +97,7 @@ public class UPAddF extends Fragment
     {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.f_upadd, container, false);
+        preferences= new Preferences(getContext());
         as=view.findViewById(R.id.as);
         spinner=view.findViewById(R.id.spinner);
         create=view.findViewById(R.id.create);
@@ -143,6 +146,13 @@ public class UPAddF extends Fragment
             }
         });
 
+        if(!preferences.isDark_theme_enabled())
+        {
+            create.setBackgroundColor(getResources().getColor(R.color.secondary_background_light));
+            skills.setBackgroundColor(getResources().getColor(R.color.secondary_background_light));
+            equipment.setBackgroundColor(getResources().getColor(R.color.secondary_background_light));
+            as.setBackgroundColor(getResources().getColor(R.color.secondary_background_light));
+        }
         return view;
     }
 

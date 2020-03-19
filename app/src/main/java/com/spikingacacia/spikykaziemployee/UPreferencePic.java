@@ -53,6 +53,7 @@ public class UPreferencePic extends Preference
     private static String TAG_SUCCESS="success";
     private static String TAG_MESSAGE="message";
     private FragmentManager fragmentManager;
+    private Preferences preferences;
     public UPreferencePic(Context context)
     {
         super(context);
@@ -60,6 +61,7 @@ public class UPreferencePic extends Preference
         this.context=context;
         fragmentManager=((AppCompatActivity)context).getFragmentManager();
         jsonParser=new JSONParser();
+        preferences = new Preferences(context);
     }
 
     public UPreferencePic(Context context, AttributeSet attrs)
@@ -69,6 +71,7 @@ public class UPreferencePic extends Preference
         this.context=context;
         fragmentManager=((AppCompatActivity)context).getFragmentManager();
         jsonParser=new JSONParser();
+        preferences = new Preferences(context);
     }
     public UPreferencePic(Context context, AttributeSet attrs, int defStyleAttr)
     {
@@ -77,7 +80,7 @@ public class UPreferencePic extends Preference
         this.context=context;
         fragmentManager=((AppCompatActivity)context).getFragmentManager();
         jsonParser=new JSONParser();
-
+        preferences = new Preferences(context);
     }
     @Override
     public void onBindViewHolder(PreferenceViewHolder view)
@@ -86,6 +89,10 @@ public class UPreferencePic extends Preference
         imageView=(ImageView)view.findViewById(R.id.imagepic);
         //get the profile pic
         imageView.setImageBitmap(USettingsActivity.profilePic);
+        if(!preferences.isDark_theme_enabled())
+        {
+            view.itemView.setBackgroundColor(context.getResources().getColor(R.color.secondary_background_light));
+        }
         view.findViewById(R.id.edit).setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -128,7 +135,7 @@ public class UPreferencePic extends Preference
                 try
                 {
 
-                    final String path = getPath(uri);
+                    final String path= GetFilePathFromDevice.getPath(context,uri);
                     Log.d("path",path);
 
                 if (true)
@@ -165,30 +172,6 @@ public class UPreferencePic extends Preference
                 }
             }
             getFragmentManager().beginTransaction().remove(this).commit();
-        }
-        private String getPath(Uri uri)
-        {
-            if(uri==null)
-                return null;
-            String res=null;
-
-            if (DocumentsContract.isDocumentUri(getActivity(), uri))
-            {
-                //emulator
-                String[] path = uri.getPath().split(":");
-                res = path[1];
-                Log.i("debinf ProdAct", "Real file path on Emulator: "+res);
-            }
-            else {
-                String[] proj = {MediaStore.Images.Media.DATA};
-                Cursor cursor = getActivity().getContentResolver().query(uri, proj, null, null, null);
-                if (cursor.moveToFirst()) {
-                    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                    res = cursor.getString(column_index);
-                }
-                cursor.close();
-            }
-            return res;
         }
         private boolean uploadPic(final String location) {
             boolean ok=true;

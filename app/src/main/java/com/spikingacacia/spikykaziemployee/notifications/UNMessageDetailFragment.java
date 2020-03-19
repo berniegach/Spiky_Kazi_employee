@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.spikingacacia.spikykaziemployee.Preferences;
 import com.spikingacacia.spikykaziemployee.R;
 
 /**
@@ -29,6 +30,7 @@ public class UNMessageDetailFragment extends Fragment
      */
     private UNMessageContent.MessageItem mItem;
     private String[]content;
+    private Preferences preferences;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -43,6 +45,7 @@ public class UNMessageDetailFragment extends Fragment
     {
         super.onCreate(savedInstanceState);
         content=getArguments().getStringArray("items");
+        preferences = new Preferences(getContext());
 
         /*if (getArguments().containsKey(ARG_ITEM_ID))
         {
@@ -58,7 +61,10 @@ public class UNMessageDetailFragment extends Fragment
                              Bundle savedInstanceState)
     {
         View rootView = inflater.inflate(R.layout.unmessage_detail, container, false);
-
+        if(!preferences.isDark_theme_enabled())
+        {
+            rootView.findViewById(R.id.main).setBackgroundColor(getResources().getColor(R.color.secondary_background_light));
+        }
         // Show the dummy content as text in a TextView.
         if (content != null)
         {

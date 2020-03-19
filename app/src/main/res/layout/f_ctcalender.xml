@@ -61,6 +61,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/month_days"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/tertiary_background"
@@ -215,6 +216,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/week_days"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/tertiary_background"
@@ -373,6 +375,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/day_view_days"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/tertiary_background"
@@ -484,6 +487,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/footer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="bottom"
